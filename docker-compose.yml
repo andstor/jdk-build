@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  openjdk7:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./output:/build/jdk7/build
+    tty: true
