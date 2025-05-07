@@ -3,7 +3,8 @@ FROM ubuntu:14.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
     build-essential \
     openjdk-6-jdk \
     autoconf \
@@ -23,7 +24,8 @@ RUN apt-get update && apt-get install -y \
     git \
     ca-certificates \
     wget \
-    ccache && \
+    ccache \
+    **ant** && \
     rm -rf /var/lib/apt/lists/*
 
 # Set env variables for building JDK 7
