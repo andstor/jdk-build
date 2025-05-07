@@ -29,22 +29,29 @@ RUN apt-get update && \
     ant && \
     rm -rf /var/lib/apt/lists/*
 
-# Set env variables for building JDK 7
+# Environment variables
 ENV LANG=C
 ENV ALT_BOOTDIR=/usr/lib/jvm/java-6-openjdk-amd64
 ENV HOTSPOT_BUILD_JOBS=4
 ENV SKIP_COMPARE_IMAGES=true
 ENV SKIP_BOOT_CYCLE=true
 ENV OUTPUTDIR=/build/output
+ENV DROPS_DIR=/java/devtools/share/jdk7-drops
+
+# Prepare build directory
+WORKDIR /build
 
 # Clone OpenJDK 7 GA source from GitHub
-WORKDIR /build
 RUN git clone --branch jdk7-b147 --depth 1 https://github.com/openjdk/jdk.git jdk7
 
-WORKDIR /build/jdk7
+# Clone jaxp drop-in repo
+RUN mkdir -p /java/devtools/share && \
+    git clone https://github.com/openjdk-mirror/jdk7u-jaxp.git $DROPS_DIR
 
-# Build
+# Build JDK
+WORKDIR /build/jdk7
 RUN make sanity && \
+    ant -Djdk.home=$ALT_BOOTDIR -Ddrops.dir=$DROPS_DIR -Doutput.dir=$OUTPUTDIR -f jaxp/make/build.xml all && \
     make all
 
 # Default shell
