@@ -11,6 +11,7 @@ RUN apt-get update && \
     make \
     zip \
     unzip \
+    gawk \
     libx11-dev \
     libxext-dev \
     libxrender-dev \
