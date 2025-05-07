@@ -25,7 +25,7 @@ RUN apt-get update && \
     ca-certificates \
     wget \
     ccache \
-    **ant** && \
+    ant && \
     rm -rf /var/lib/apt/lists/*
 
 # Set env variables for building JDK 7
