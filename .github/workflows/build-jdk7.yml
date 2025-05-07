@@ -1,0 +1,33 @@
+name: Build OpenJDK 7
+
+on:
+  push:
+    paths:
+      - 'jdk7/**'
+      - '.github/workflows/build-jdk7.yml'
+  workflow_dispatch:
+
+jobs:
+  build-jdk7:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t openjdk7-builder ./jdk7
+
+      - name: Run build container
+        run: |
+          docker run --rm -v ${{ github.workspace }}/jdk7/output:/build/jdk7/build openjdk7-builder
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openjdk7-build
+          path: jdk7/output/linux-amd64/j2sdk-image/
