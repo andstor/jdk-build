@@ -41,10 +41,8 @@ RUN git clone --branch jdk7-b147 --depth 1 https://github.com/openjdk/jdk.git jd
 WORKDIR /build/jdk7
 
 # Build
-RUN bash ./configure \
-    --with-boot-jdk=$ALT_BOOTDIR \
-    --with-debug-level=release && \
-    make images
+RUN make sanity && \
+    make all
 
 # Default shell
 CMD ["/bin/bash"]
